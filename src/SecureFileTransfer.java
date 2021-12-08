@@ -46,7 +46,7 @@ public class SecureFileTransfer {
                     String filePath = scan.next();
 
                     scan.nextLine();
-                    System.out.println("Enter key: ");
+                    System.out.println("Enter key(key must be length = (16 ~ 128 || 24 ~ 192|| 32 ~ 256) crypto): ");
                     String key = scan.nextLine();
 
                     // Khởi tạo server socket
@@ -93,42 +93,8 @@ public class SecureFileTransfer {
                     DataInputStream fromServer = new DataInputStream(clientSocket.getInputStream());
                     DataOutputStream toServer = new DataOutputStream(clientSocket.getOutputStream());
 
-                    // Client nhận p(prime number) và g (prime number's generator) từ server
-                    // client chọn 1 số bí mật (b)
-                    // client tính số B=g^b(modp)
-                    // client nhận A từ server
-                    // client gửi B đến server.
-                    // client tính s=A^b(modp)
-                    // -> client có secret key
-
-                    //---Thực hiện
-                    // Nhận p từ server
-//                    BigInteger p = new BigInteger(fromServer.readUTF());
-//                    // receive nhận g từ server
-//                    BigInteger g = new BigInteger(fromServer.readUTF());
-//                    // Nhận A từ server
-//                    BigInteger A = new BigInteger(fromServer.readUTF());
-//
-//                    // Khởi tạo số b
-//                    Random randomGenerator = new Random();
-//                    BigInteger b = new BigInteger(1024, randomGenerator); // secret key b (private) (on client)
-//
-//                    // tính khóa public B
-//                    BigInteger B = g.modPow(b, p); // calculated public client key (B=g^b(modp))
-//
-//                    // gửi B đến server
-//                    toServer.writeUTF(B.toString());
-//
-//                    // tính kóa secret
-//                    BigInteger decryptionKeyClient = A.modPow(b, p);
-//
-//                    System.out.println("Calculated key: " + decryptionKeyClient);
-//
-//                    // khởi tạo AES key
-//                    Key key = generateKey(decryptionKeyClient.toByteArray());
-
                     String key = fromServer.readUTF();
-                    System.out.println(key);
+                    System.out.println("chh_log key crypto -->" + key);
 
                     //
                     System.out.println("Waiting for file.");
@@ -151,9 +117,9 @@ public class SecureFileTransfer {
                         //Lấy tên file
                         String fileLoc = fName.split(Pattern.quote(File.separator))[fName.split(Pattern.quote(File.separator)).length-1];
                         // Giải mã file
-                        System.out.println(fileLoc);
+//                        System.out.println("File saved in:"+fileLoc);
                         String decryptedFile = decryptFile(encryptedFile, key);
-                        System.out.println(decryptedFile);
+                        System.out.println("Encrypted file"+decryptedFile);
 
                         // Ghi đoạn văn đã giải mã vào file
                         writeFile(fileLoc, decryptedFile);

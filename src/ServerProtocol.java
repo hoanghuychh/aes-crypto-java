@@ -46,48 +46,6 @@ public class ServerProtocol implements Runnable {
 
             threadLogger.log(Level.INFO, "Sending process started.");
 
-            // Server khởi tạo p(prime number) và g (prime number's generator)
-            // Server gửi p và g đến client
-            // server chọn một số bí mật (a)
-            // server tính A=g^a(modp)
-            // server gửi A cho client.
-            // server nhận B từ client.
-            // server tính s=B^a(modp)
-            // ->Server có khóa bí mật
-
-//            AlgorithmParameterGenerator paramGen = AlgorithmParameterGenerator.getInstance("DH");
-//            paramGen.init(1024, new SecureRandom());
-//            AlgorithmParameters params = paramGen.generateParameters();
-//            DHParameterSpec dhSpec = (DHParameterSpec)params.getParameterSpec(DHParameterSpec.class);
-//
-//            Random randomGenerator = new Random();
-//
-//            BigInteger a = new BigInteger(1024, randomGenerator); // Khóa bí mật a (private) (server)
-//            BigInteger p = dhSpec.getP(); // prime number (public) (khởi tạo ở server)
-//            BigInteger g = dhSpec.getG(); // primer number generator (public) (khởi tạo ở server)
-//
-//            BigInteger A = g.modPow(a, p); // tính khóa public của server(A=g^a(modp))
-//
-//            // Gửi p
-//            toClient.writeUTF(p.toString());
-//
-//            // Gửi g
-//            toClient.writeUTF(g.toString());
-//
-//            // Gửi A
-//            toClient.writeUTF(A.toString());
-//
-//            // NhậnB
-//            BigInteger B = new BigInteger(fromClient.readUTF());
-//
-//            // Tính khóa bí mật
-//            BigInteger encryptionKeyServer = B.modPow(a, p);
-//
-//            System.out.println("Calculated key: " + encryptionKeyServer);
-//
-//            // khởi tạo AES key
-//            Key key = generateKey(encryptionKeyServer.toByteArray());
-
             toClient.writeUTF(key);
             
             // Gửi tên file
