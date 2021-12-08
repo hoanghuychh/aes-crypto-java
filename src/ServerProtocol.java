@@ -102,24 +102,4 @@ public class ServerProtocol implements Runnable {
         return output;
     }
 
-    // Khởi tạo khóa từ các thông số đã có. Chương trình tự randam, mình khum có nhập.
-    private static Key generateKey(byte[] sharedKey)
-    {
-        // Mã hóa AES 128 bit. Nên cái bytekey chỉ đượt 16 byte thoi..
-        byte[] byteKey = new byte[16];
-        for(int i = 0; i < 16; i++) {
-            byteKey[i] = sharedKey[i];
-        }
-
-        // chuyển sang định dạng AES
-        try {
-            Key key = new SecretKeySpec(byteKey, "AES");
-
-            return key;
-        } catch(Exception e) {
-            System.err.println("Error while generating key: " + e);
-        }
-
-        return null;
-    }
 }

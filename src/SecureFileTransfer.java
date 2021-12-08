@@ -44,11 +44,17 @@ public class SecureFileTransfer {
 
                     // Nhập file cần gửi
                     String filePath = scan.next();
-
+                    
                     scan.nextLine();
+                    outer:      
                     System.out.println("Enter key(key must be length = (16 ~ 128 || 24 ~ 192|| 32 ~ 256) crypto): ");
                     String key = scan.nextLine();
-
+                    int keyLength = key.length();
+                    if(keyLength != 16 && keyLength != 24 && keyLength != 32){
+                         System.out.println("Please enter key must be length = (16 || 24 || 32)");
+                        break;
+                    }
+                    
                     // Khởi tạo server socket
                     ServerSocket serverSocket = new ServerSocket(port);
 
@@ -114,12 +120,14 @@ public class SecureFileTransfer {
                                 break;
                             }
                         }
+                        
+                        System.out.println("ENCRYPTED FILE:"+encryptedFile);
                         //Lấy tên file
                         String fileLoc = fName.split(Pattern.quote(File.separator))[fName.split(Pattern.quote(File.separator)).length-1];
                         // Giải mã file
 //                        System.out.println("File saved in:"+fileLoc);
                         String decryptedFile = decryptFile(encryptedFile, key);
-                        System.out.println("Encrypted file"+decryptedFile);
+                        System.out.println("DECRYPTED FILE:"+decryptedFile);
 
                         // Ghi đoạn văn đã giải mã vào file
                         writeFile(fileLoc, decryptedFile);
@@ -149,26 +157,6 @@ public class SecureFileTransfer {
         return new String(new AES(secretKey.getBytes()).ECB_decrypt(Base64.getDecoder().decode(encryptedText)));
     }
 
-    // Khởi tạo SecretKey từ các giá trị đã cho. Máy sẽ tự random, mình khum có nhập.
-    private static Key generateKey(byte[] sharedKey)
-    {
-        // Mã hóa AES 128 bit. Nên cái bytekey chỉ đượt 16 byte thoi.
-        byte[] byteKey = new byte[16];
-        for(int i = 0; i < 16; i++) {
-            byteKey[i] = sharedKey[i];
-        }
-
-        // chuyển sang định dạng AES
-        try {
-            Key key = new SecretKeySpec(byteKey, "AES");
-
-            return key;
-        } catch(Exception e) {
-            System.err.println("Error while generating key: " + e);
-        }
-
-        return null;
-    }
 
     // Đọc file
     public static String readFile(String fileName) {
